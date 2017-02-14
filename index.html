@@ -1,0 +1,52 @@
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+div { margin-left: 20px }
+</style>
+</head>
+<body>
+<p>Click below to explore the taxonomy</p>
+<div id="NBNSYS0100001342">kingdom <= Animalia</div>
+<script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+<script>
+var ranks=["kingdom","phylum","class","order","family","genus","species"]
+var APL=" <= "
+var APR=" => "
+
+function reduce(event) {
+  event.stopPropagation();
+  var node = this.childNodes[0];
+  var guid = this.id;
+  var rank = node.nodeValue.split(' ')[0];
+  var name = node.nodeValue.split(' ')[2];
+  $(this).html(rank+APL+name).children().remove();
+  $(this).off("click",reduce).on("click",expand);;
+}
+
+function expand(event) {
+  event.stopPropagation();
+  var node = this.childNodes[0];
+  var guid = this.id;
+  var rank = node.nodeValue.split(' ')[0];
+  var name = node.nodeValue.split(' ')[2];
+  var nextrank = ranks[ranks.indexOf(rank)+1];
+  $.getJSON("https://species-ws.nbnatlas.org/search.json?pageSize=99999&q=rkid_"+rank+":"+guid+"&fq=rank:"+nextrank, function(json) {
+  //$.getJSON("https://species-ws.nbnatlas.org/search.json?pageSize=99999&q=rk_"+rank+":"+name+"&fq=rank:"+nextrank, function(json) {
+    var r=json.searchResults.results;
+    for (var i=0, len=r.length; i<len; i++) {
+      $('#'+guid).append("<div id='"+r[i].guid+"'>"+r[i].rank+APL+r[i].name+"</div>");
+      $('#'+r[i].guid).click(expand);
+    }
+    node.nodeValue=rank+APR+name;
+    $('#'+guid).off("click",expand).on("click",reduce);
+  });
+}
+
+$('#NBNSYS0100001342').on("click",expand);
+</script>
+</body>
+</html>
