@@ -36,7 +36,7 @@ function expand(event) {
   var nextrank = ranks[ranks.indexOf(rank)+1];
   $.getJSON("https://species-ws.nbnatlas.org/search.json?pageSize=99999&q=rkid_"+rank+":"+guid+"&fq=rank:"+nextrank, function(json) {
   //$.getJSON("https://species-ws.nbnatlas.org/search.json?pageSize=99999&q=rk_"+rank+":"+name+"&fq=rank:"+nextrank, function(json) {
-    var r=json.searchResults.results;
+    var r = json.searchResults.results.sort(function(a, b) { return a.name.localeCompare(b.name) });
     for (var i=0, len=r.length; i<len; i++) {
       $('#'+guid).append("<div id='"+r[i].guid+"'>"+r[i].rank+APL+r[i].name+"</div>");
       $('#'+r[i].guid).click(expand);
