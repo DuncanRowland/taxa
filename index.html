@@ -22,7 +22,7 @@ function reduce(event) {
   var node = this.childNodes[0];
   var guid = this.id;
   var rank = node.nodeValue.split(' ')[0];
-  var name = node.nodeValue.split(' ')[2];
+  var name = node.nodeValue.split(' ').slice(2).join(' ');
   $(this).html(rank+APL+name).children().remove();
   $(this).off("click",reduce).on("click",expand);;
 }
@@ -32,7 +32,7 @@ function expand(event) {
   var node = this.childNodes[0];
   var guid = this.id;
   var rank = node.nodeValue.split(' ')[0];
-  var name = node.nodeValue.split(' ')[2];
+  var name = node.nodeValue.split(' ').slice(2).join(' ');
   var nextrank = ranks[ranks.indexOf(rank)+1];
   $.getJSON("https://species-ws.nbnatlas.org/search.json?pageSize=99999&q=rkid_"+rank+":"+guid+"&fq=rank:"+nextrank, function(json) {
   //$.getJSON("https://species-ws.nbnatlas.org/search.json?pageSize=99999&q=rk_"+rank+":"+name+"&fq=rank:"+nextrank, function(json) {
