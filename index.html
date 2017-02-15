@@ -24,7 +24,7 @@ function reduce(event) {
   var rank = node.nodeValue.split(' ')[0];
   var name = node.nodeValue.split(' ').slice(2).join(' ');
   $(this).html(rank+APL+name).children().remove();
-  $(this).off("click",reduce).on("click",expand);;
+  $(this).off("click",reduce).on("click",expand);
 }
 
 function expand(event) {
