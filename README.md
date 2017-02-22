@@ -1,2 +1,2 @@
 # taxa
-Taxonomy search example
+Taxonomy search example: http://duncanrowland.github.io/taxa
